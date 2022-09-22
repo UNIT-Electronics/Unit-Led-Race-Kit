@@ -1,7 +1,10 @@
-//Version para placa Unit Race Led Kit
-//Para 2 jugadores
+//Codigo Original: https://gitlab.com/open-led-race/olr-arduino-basic
 
-char const softwareId[] = "A2P0";  // A2P0: "A"=OpenLEDRace Team, "2P0"=Game ID (2P=2 Players, 0=Type 0 w slope w/ box)
+//Este Codigo:
+//Codigo Unit para ESP32 y placa UNIT Race Led Kit
+//Codigo modificado para 2 jugadores
+
+char const softwareId[] = "A2P0"; 
 char const version[] = "1.0.0";
 
 #include "Arduino.h"
@@ -9,9 +12,9 @@ char const version[] = "1.0.0";
 
 #define MAXLED         600 // Maximo numero de Leds en la tira
 
-#define PIN_LED        22 // R 500 ohms to DI pin for WS2812 and WS2813, for WS2813 BI pin of first LED to GND  ,  CAP 1000 uF to VCC 5v/GND,power supplie 5V 2A  
-#define PIN_P1         17 // switch player 1 to PIN and GND
-#define PIN_P2         18 // switch player 2 to PIN and GND 
+#define PIN_LED        22 
+#define PIN_P1         17 //Jugador 1
+#define PIN_P2         18 //Jugador 2
 
 
 #define NoVueltas 2 // Definimos la cantidad de vueltas de la carrera
@@ -23,7 +26,7 @@ char const version[] = "1.0.0";
 bool ENABLE_RAMP = 0;
 bool VIEW_RAMP = 0;
 
-int NPIXELS = MAXLED; // Leds en la pista
+int NPIXELS = MAXLED; // Numero de LEDs en la pista
 int cont_print = 0;
 
 #define COLOR1   Color(0,251,255)
@@ -33,13 +36,13 @@ int cont_print = 0;
 #define COLOR2_tail   Color(0,i*3,0)
 
 // Serial Communications
-#define EOL                 '\n' // End of Command char used in Protocol
+#define EOL                 '\n' // Carácter de fin de comando utilizado en el protocolo
 
 #define REC_COMMAND_BUFLEN  32
-char cmd[REC_COMMAND_BUFLEN];    // Stores command received by ReadSerialComand()
+char cmd[REC_COMMAND_BUFLEN];    // Almacena el comando recibido por ReadSerialComand()
 
 #define TX_COMMAND_BUFLEN  64
-char txbuff[TX_COMMAND_BUFLEN];  // to prepare command strings to send
+char txbuff[TX_COMMAND_BUFLEN];  // para preparar cadenas de comando para enviar
 
 
 
@@ -63,12 +66,12 @@ byte loop1 = 0;
 byte loop2 = 0;
 
 byte leader = 0;
-byte loop_max = NoVueltas; //total laps race
+byte loop_max = NoVueltas;
 
 
 float ACEL = 0.2;
-float kf = 0.02; //friction constant 0.015
-float kg = 0.003; //gravity constant
+float kf = 0.02; //constante de fricción 0.015
+float kg = 0.003; //constante de gravedad
 
 byte flag_sw1 = 0;
 byte flag_sw2 = 0;
@@ -110,7 +113,7 @@ void setup() {
   pinMode(PIN_P1, INPUT_PULLUP);
   pinMode(PIN_P2, INPUT_PULLUP);
 
-  if ((digitalRead(PIN_P1) == 0)) //push switch 1 on reset for activate physics
+  if ((digitalRead(PIN_P1) == 0)) //Presione el Jugador 1 en el reinicio para activar la física
   { ENABLE_RAMP = 1;
     set_ramp(HIGH_RAMP, INI_RAMP, MED_RAMP, END_RAMP);
     for (int i = 0; i < (MED_RAMP - INI_RAMP); i++) {
@@ -122,7 +125,7 @@ void setup() {
     track.show();
     delay(1000);
     if ((digitalRead(PIN_P1) == 0)) {
-      VIEW_RAMP = 1; // if retain push switch 1 set view ramp
+      VIEW_RAMP = 1; //Si mantiene presionado el Jugador 1, configure la visualizacion de la rampa
     }
     else {
       for (int i = 0; i < NPIXELS; i++) {
@@ -143,7 +146,7 @@ void setup() {
 }
 
 void start_race() {
-  send_race_phase(4); // Race phase 4: Countdown
+  send_race_phase(4); //Fase 4 de la carrera: Cuenta atrás
   for (int i = 0; i < NPIXELS; i++) {
     track.setPixelColor(i, track.Color(0, 0, 0));
   };
@@ -166,7 +169,7 @@ void start_race() {
   track.show();
   delay(2000);
   timestamp = 0;
-  send_race_phase(5); // Race phase 4: Race Started
+  send_race_phase(5); // Fase de carrera 4: carrera iniciada
 };
 
 void winner_fx(byte w) {
@@ -217,92 +220,92 @@ void print_cars_position( void ) {
 
 
 void burning1() {
-  //to do
+  //que hacer
 }
 
 void burning2() {
-  //to do
+  //que hacer
 }
 
 void track_rain_fx() {
-  //to do
+  //que hacer
 }
 
 void track_oil_fx() {
-  //to do
+  //que hacer
 }
 
 void track_snow_fx() {
-  //to do
+  //que hacer
 }
 
 
 void fuel_empty() {
-  //to do
+  //que hacer
 }
 
 void fill_fuel_fx() {
-  //to do
+  //que hacer
 }
 
 void in_track_boxs_fx() {
-  //to do
+  //que hacer
 }
 
 void pause_track_boxs_fx() {
-  //to do
+  //que hacer
 }
 
 void flag_boxs_stop() {
-  //to do
+  //que hacer
 }
 
 void flag_boxs_ready() {
-  //to do
+  //que hacer
 }
 
 void draw_safety_car() {
-  //to do
+  //que hacer
 }
 
 void telemetry_rx() {
-  //to do
+  //que hacer
 }
 
 void telemetry_tx() {
-  //to do
+  //que hacer
 }
 
 void telemetry_lap_time_car1() {
-  //to do
+  //que hacer
 }
 
 void telemetry_lap_time_car2() {
-  //to do
+  //que hacer
 }
 
 void telemetry_record_lap() {
-  //to do
+  //que hacer
 }
 
 void telemetry_total_time() {
-  //to do
+  //que hacer
 }
 
 int read_sensor(byte player) {
-  return (0); //to do
+  return (0); //que hacer
 }
 
 int calibration_sensor(byte player) {
-  return (0); //to do
+  return (0); //que hacer
 }
 
 int display_lcd_laps() {
-  return (0); //to do
+  return (0); //que hacer
 }
 
 int display_lcd_time() {
-  return (0); //to do
+  return (0); //que hacer
 }
 
 void draw_car1(void) {
@@ -319,7 +322,7 @@ void draw_car2(void) {
 
 void loop() {
 
-  // look for commands received on serial
+  // buscar comandos recibidos en serie
   checkSerialCommand();
 
 
@@ -394,7 +397,7 @@ void loop() {
 
   if (loop1 > loop_max) {
     sprintf( txbuff, "w1%c", EOL );
-    sendSerialCommand(txbuff); // Send Winner=1 command
+    sendSerialCommand(txbuff); //Enviar ganador = 1er Jugador
     for (int i = 0; i < NPIXELS / 10; i++) {
       track.setPixelColor(i, track.COLOR1_tail);
     }; track.show();
@@ -403,7 +406,7 @@ void loop() {
   }
   if (loop2 > loop_max) {
     sprintf( txbuff, "w2%c", EOL );
-    sendSerialCommand(txbuff); // Send Winner=2 command
+    sendSerialCommand(txbuff); // Enviar ganador = 2do Jugador
     for (int i = 0; i < NPIXELS / 10; i++) {
       track.setPixelColor(i, track.COLOR2_tail);
     }; track.show();
@@ -455,40 +458,40 @@ void loop() {
 void checkSerialCommand() {
 
   int clen = checkSerial(cmd);
-  if (clen == 0) return ;      // No commands received
-  if (clen  < 0) {             // Error receiving command
-    sprintf( txbuff, "!1Error reading serial command:[%d]", clen); // Send a warning to host
+  if (clen == 0) return ;      // No se recibieron comandos
+  if (clen  < 0) {             // Error al recibir el comando
+    sprintf( txbuff, "!1Error reading serial command:[%d]", clen); // Enviar una advertencia al anfitrión
     sendSerialCommand(txbuff);
     return;
   }
   // clen > 0 ---> Command with length=clen ready in  cmd[]
 
   switch (cmd[0]) {
-    case '#':                         // Handshake -> send back
+    case '#':                         // Apretón de manos -> enviar de vuelta
       {
         sprintf( txbuff, "#%c", EOL );
         sendSerialCommand(txbuff);
       }
       return;
 
-    case  '@' :                         // Enter "Configuration Mode"
+    case  '@' :                         // Ingrese al "Modo de configuración"
       {
-        // send back @OK
-        // No real cfg mode here, but send @OK so the Desktop app (Upload, configure)
-        // can send a GET SOFTWARE Type/Ver command and identify this software
+        // enviar de vuelta @OK
+        // No hay modo cfg real aquí, pero envíe @OK para que la aplicación de escritorio (Cargar, configurar)
+        //puede enviar un comando GET SOFTWARE Type/Ver e identificar este software
         sprintf( txbuff, "@OK%c", EOL );
         sendSerialCommand(txbuff);
       }
       return;
 
-    case '?' :                          // Get Software Id
+    case '?' :                          // Obtener ID de software
       {
         sprintf( txbuff, "%s%s%c", "?", softwareId, EOL );
         sendSerialCommand(txbuff);
       }
       return;
 
-    case '%' :                          // Get Software Version
+    case '%' :                          // Obtener versión de software
       {
         sprintf( txbuff, "%s%s%c", "%", version, EOL );
         sendSerialCommand(txbuff);
@@ -496,7 +499,7 @@ void checkSerialCommand() {
       return;
   }
 
-  // if we get here, the command it's not managed by this software -> Answer <CommandId>NOK
+  // si llegamos aquí, el comando no es administrado por este software -> Responder <CommandId>NOK
   sprintf(txbuff, "%cNOK%c", cmd[0], EOL );
   sendSerialCommand(txbuff);
 
@@ -510,21 +513,13 @@ void send_race_phase( int phase ) {
 }
 
 
-// Command Send/Receive base functions
+// Funciones básicas de envío/recepción de comandos
 ///////////////////////////////////////
 
-// vars used only in these functions
+// vars usados ​​solo en estas funciones
 Stream*  _stream = &Serial;
 int      _bufIdx;
 
-/*  Non blocking: call these function in main loop()
-
-    If there are bytes available in Serial, READ JUST ONE char
-    and ADD it to the 'internal' cmd buffer
-      The char just read is an END OF COMMAND char ?
-        N: Return 0 (no complete command available yet)
-        Y: Return buffer length (the caller will find the command in [buf]
-*/
 int checkSerial(char *   buf) {
   while (_stream->available()) {
     if (_bufIdx < REC_COMMAND_BUFLEN - 2) {
@@ -538,8 +533,8 @@ int checkSerial(char *   buf) {
         buf[_bufIdx++] = data;
       }
     } else {
-      // buffer full
-      // reset and retunn error
+      // Buffer lleno
+      // Reinicio y error de retorno
       buf[_bufIdx++] = '\0';
       _bufIdx = 0;
       return (-2);
@@ -550,11 +545,11 @@ int checkSerial(char *   buf) {
 
 
 void sendSerialCommand(char* str) {
-  // get command length
+  // obtener la longitud del comando
   int dlen = 0;
   for (; dlen < TX_COMMAND_BUFLEN; dlen++ ) {
     if (*(str + dlen) == EOL ) {
-      dlen++; // send EOC
+      dlen++; // enviar EOC
       break;
     }
   }
